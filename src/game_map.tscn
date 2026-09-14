@@ -8,5 +8,7 @@ margin_top = 100.0
 margin_right = 712.0
 margin_bottom = 512.0
 rect_min_size = Vector2( 256, 256 )
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
 columns = 4
 script = ExtResource( 1 )

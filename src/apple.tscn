@@ -14,10 +14,8 @@ shadow_color = Color( 0, 0, 0, 1 )
 shadow_size = 4
 
 [node name="apple" type="Control" groups=["delivery_item"]]
-anchor_right = 0.062
-anchor_bottom = 0.107
-margin_right = 0.511997
-margin_bottom = -0.200005
+anchor_right = 0.0976562
+anchor_bottom = 0.166667
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": true

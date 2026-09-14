@@ -13,16 +13,26 @@ _global_script_classes=[ {
 "class": "GameDeliveryItem",
 "language": "GDScript",
 "path": "res://src/game_item.gd"
+}, {
+"base": "Resource",
+"class": "LevelData",
+"language": "GDScript",
+"path": "res://src/level_data.gd"
 } ]
 _global_script_class_icons={
-"GameDeliveryItem": ""
+"GameDeliveryItem": "",
+"LevelData": ""
 }
 
 [application]
 
 config/name="task4"
-run/main_scene="res://src/apple.tscn"
+run/main_scene="res://src/test.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Globals="*res://src/globals.gd"
 
 [gui]
 

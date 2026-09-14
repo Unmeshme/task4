@@ -12,4 +12,4 @@ script = ExtResource( 3 )
 
 [node name="apple" parent="." instance=ExtResource( 1 )]
 
-[node name="orange" parent="." instance=ExtResource( 4 )]
+[node name="orang" parent="." instance=ExtResource( 4 )]

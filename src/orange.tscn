@@ -13,8 +13,8 @@ shadow_color = Color( 0, 0, 0, 1 )
 shadow_size = 4
 
 [node name="orange" type="Control" groups=["delivery_item"]]
-anchor_right = 0.0625
-anchor_bottom = 0.106667
+anchor_right = 0.0976562
+anchor_bottom = 0.166667
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": true
@@ -22,19 +22,21 @@ __meta__ = {
 
 [node name="back-ground" type="Panel" parent="."]
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.99
+margin_bottom = 0.999999
+rect_min_size = Vector2( 100, 100 )
+rect_scale = Vector2( 1, 0.99 )
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
 [node name="icon" type="TextureRect" parent="."]
-anchor_left = 0.09375
-anchor_top = 0.09375
-anchor_right = 8.09375
-anchor_bottom = 8.09375
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 25.0
+margin_top = 25.0
+margin_right = 437.0
+margin_bottom = 437.0
 rect_scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": true
-}
