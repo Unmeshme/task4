@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/orange.png" type="Texture" id=1]
+[ext_resource path="res://src/orange.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.960784, 0.717647, 0.407843, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_size = 4
+
+[node name="orange" type="Control" groups=["delivery_item"]]
+anchor_right = 0.0625
+anchor_bottom = 0.106667
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="back-ground" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="icon" type="TextureRect" parent="."]
+anchor_left = 0.09375
+anchor_top = 0.09375
+anchor_right = 8.09375
+anchor_bottom = 8.09375
+rect_scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
