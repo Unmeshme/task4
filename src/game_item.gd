@@ -4,7 +4,7 @@ class_name GameDeliveryItem
 extends Control
 
 
-var move_vector: Vector2 = Vector2.ZERO
+
 var movement_tween: Tween
 
 
@@ -22,6 +22,7 @@ func _ready() -> void:
 
 
 func _process(_p_delta: float) -> void:
+	var move_vector: Vector2 = Vector2.ZERO
 	if Input.is_action_just_pressed("up"):
 		move_vector = Vector2(0, -1)
 	if Input.is_action_just_pressed("down"):
@@ -30,24 +31,24 @@ func _process(_p_delta: float) -> void:
 		move_vector = Vector2(-1, 0)
 	if Input.is_action_just_pressed("right"):
 		move_vector = Vector2(1, 0)
-	
-	#_make_move(move_vector)
+	_make_move(move_vector)
 
 
-#tweening the motion might be good here
+
 func _make_move(p_move_vector: Vector2) -> void:
+	#this should produce the correct move vector
 	var m_target_position :Vector2 = rect_global_position + p_move_vector * 100
 	
 	m_target_position.x = clamp(
 		m_target_position.x,
-		Globals._min_rect.x,
-		Globals._max_rect.x
+		Globals.rect_pos.x,
+		Globals.max_width
 	)
 	
 	m_target_position.y = clamp(
 		m_target_position.y,
-		Globals._min_rect.y,
-		Globals._max_rect.y
+		Globals.rect_pos.y,
+		Globals.max_height
 	)
 
 	movement_tween.interpolate_property(
@@ -55,7 +56,7 @@ func _make_move(p_move_vector: Vector2) -> void:
 		"rect_global_position",
 		rect_global_position,
 		m_target_position,
-		1.0,
+		.5,
 		Tween.TRANS_LINEAR,
 		Tween.EASE_IN_OUT
 	)
