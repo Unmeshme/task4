@@ -13,9 +13,9 @@ const DEFAULT_SQUARE = preload("res://src/square.tscn")
 func _get_rect_position() -> Vector2:
 	return rect_global_position
 
-func draw_map_background() -> void:
-	columns = Globals.grid_width
-	var m_rows: int = Globals.grid_height
+func draw_map_background(p_columns: int, p_width: int) -> void:
+	columns = p_columns
+	var m_rows: int = p_width
 	
 	for _i in range(columns * m_rows):
 		var m_instance: Control = DEFAULT_SQUARE.instance()

@@ -6,7 +6,8 @@ extends Control
 
 
 var movement_tween: Tween
-
+var scaled_value: Vector2 = Vector2(1.1, 1.1)
+var scaled_down: Vector2 = Vector2(0.9, 0.9)
 
 enum ITEM_ID{
 	ITEM_APPLE = 0,
@@ -14,53 +15,40 @@ enum ITEM_ID{
 }
 
 var my_id: int
+#position inside the grid
+#var curr_position: Vector2
 
 func _ready() -> void:
-	#assign min and max size plus step size it can move.
-	movement_tween = Tween.new()
-	add_child(movement_tween)
-
-
-func _process(_p_delta: float) -> void:
-	var move_vector: Vector2 = Vector2.ZERO
-	if Input.is_action_just_pressed("up"):
-		move_vector = Vector2(0, -1)
-	if Input.is_action_just_pressed("down"):
-		move_vector = Vector2(0, 1)
-	if Input.is_action_just_pressed("left"):
-		move_vector = Vector2(-1, 0)
-	if Input.is_action_just_pressed("right"):
-		move_vector = Vector2(1, 0)
-	_make_move(move_vector)
-
-
-
-func _make_move(p_move_vector: Vector2) -> void:
-	#this should produce the correct move vector
-	var m_target_position :Vector2 = rect_global_position + p_move_vector * 100
-	
-	m_target_position.x = clamp(
-		m_target_position.x,
-		Globals.rect_pos.x,
-		Globals.max_width
-	)
-	
-	m_target_position.y = clamp(
-		m_target_position.y,
-		Globals.rect_pos.y,
-		Globals.max_height
-	)
-
-	movement_tween.interpolate_property(
-		self,
-		"rect_global_position",
-		rect_global_position,
-		m_target_position,
-		.5,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_IN_OUT
-	)
-	movement_tween.start()
-
-func _set_id() -> void:
+	#start_idle_pulse()
 	pass
+
+
+func start_idle_pulse() -> void:
+	rect_pivot_offset = rect_size / 2.0
+	var m_pulse_tween: SceneTreeTween = get_tree().create_tween()
+	
+	m_pulse_tween.set_loops()
+	
+	#scale out sequence
+	m_pulse_tween.tween_property(
+		self,
+		"rect_scale",
+		scaled_value,
+		.2
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	m_pulse_tween.tween_property(
+		self,
+		"rect_scale",
+		Vector2.ONE,
+		.2
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+func spawn_animation() -> void:
+	rect_pivot_offset = rect_size / 2.0
+	var m_scale_tween : SceneTreeTween = get_tree().create_tween()
+	
+	m_scale_tween.tween_property(self, "rect_scale", scaled_value, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	m_scale_tween.tween_property(self, "rect_scale", Vector2.ONE, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT_IN)

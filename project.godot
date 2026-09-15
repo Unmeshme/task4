@@ -17,11 +17,17 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "LevelData",
 "language": "GDScript",
-"path": "res://src/level_data.gd"
+"path": "res://resource/level_data.gd"
+}, {
+"base": "Resource",
+"class": "LevelItems",
+"language": "GDScript",
+"path": "res://resource/level_items.gd"
 } ]
 _global_script_class_icons={
 "GameDeliveryItem": "",
-"LevelData": ""
+"LevelData": "",
+"LevelItems": ""
 }
 
 [application]

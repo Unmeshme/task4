@@ -1,16 +1,13 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://src/level_data.gd" type="Script" id=1]
-[ext_resource path="res://src/apple.tscn" type="PackedScene" id=2]
-[ext_resource path="res://src/orange.tscn" type="PackedScene" id=3]
+[ext_resource path="res://resource/level_data.gd" type="Script" id=1]
 [ext_resource path="res://resource/Level2.tres" type="Resource" id=4]
 
 [resource]
 script = ExtResource( 1 )
 level_name = "lv1"
 time_limit = 60
-column_size = 5
+column_size = 4
 row_size = 4
 total_delivery = 20
-level_items = [ ExtResource( 2 ), ExtResource( 3 ) ]
 next_level = ExtResource( 4 )
