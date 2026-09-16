@@ -64,8 +64,7 @@ func _unhandled_input(p_event: InputEvent) -> void:
 	
 	if m_dir != Vector2.ZERO:
 		if is_animating:
-			buffered_input = m_dir
-			move_items(buffered_input)
+			return
 		else:
 			move_items(m_dir)
 
@@ -78,9 +77,8 @@ func move_items(p_move: Vector2) -> void:
 	is_animating = true
 	#get a row/ column according to the move_direction:
 	var m_move: Vector2 = p_move
-	
 	var m_cells_to_process: Array = []
-	
+	var m_merged_cells: Array = []
 	
 	if m_move == Vector2.LEFT or m_move == Vector2.RIGHT:
 		for m_y in range(Globals.grid_height):
@@ -92,15 +90,39 @@ func move_items(p_move: Vector2) -> void:
 	for m_cell in m_cells_to_process:
 		var m_item: Control = occupied[m_cell]
 		var m_target: Vector2 = m_cell
+		var m_will_merge: bool = false
+		var m_merge_target_cell: Vector2 = Vector2(-1, -1)
 		
 		while true:
 			var m_next: Vector2 = m_target + p_move
 			if empty_grid.has(m_next) and not occupied.has(m_next):
 				m_target = m_next
+			elif occupied.has(m_next):
+				var m_other_item: Control = occupied[m_next]
+				if m_other_item.get("my_id") == m_item.get("my_id"):
+					m_will_merge = true
+					m_merge_target_cell = m_next
+				break
 			else:
 				break
 		
-		if m_target != m_cell:
+		if m_will_merge:
+			occupied.erase(m_cell)
+			empty_grid.append(m_cell)
+			m_merged_cells.append(m_merge_target_cell)
+			
+			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_merge_target_cell)
+			var m_target_item: Control = occupied[m_merge_target_cell]
+			
+			var m_tween: SceneTreeTween = get_tree().create_tween()
+			m_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
+			m_tween.tween_callback(m_item, "queue_free")
+			
+			var m_scale_tween: SceneTreeTween = get_tree().create_tween()
+			m_scale_tween.tween_property(m_target_item, "rect_scale", scaled_value, 0.1)
+			m_scale_tween.tween_property(m_target_item, "rect_scale", Vector2.ONE, 0.1)
+			
+		elif m_target != m_cell:
 			occupied.erase(m_cell)
 			occupied[m_target] = m_item
 			empty_grid.append(m_cell)
@@ -137,7 +159,7 @@ func move_items(p_move: Vector2) -> void:
 
 
 
-func get_row_data(p_row_index:int , p_dir: Vector2) -> Array:
+func get_row_data(p_row_index: int , p_dir: Vector2) -> Array:
 	var m_x_position: Array = []
 	
 	for m_cell in occupied.keys():
