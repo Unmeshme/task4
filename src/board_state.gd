@@ -2,13 +2,19 @@ extends Control
 
 
 
-export var board_items: Resource
 
+const PITCH_VARIATION_LOWER_BOUND: float = 0.9
+const PITCH_VARIATION_UPPER_BOUND: float = 1.1
+
+
+export var board_items: Resource
+export var move_sound: AudioStream
 
 var occupied: Dictionary = {}
 var empty_grid: Array = []
 var is_animating: bool = false
 var buffered_input: Vector2 = Vector2.ZERO
+
 
 var scaled_value: Vector2 = Vector2(1.1, 1.1)
 
@@ -66,13 +72,16 @@ func _unhandled_input(p_event: InputEvent) -> void:
 		if is_animating:
 			return
 		else:
-			move_items(m_dir)
+			var m_did_move: bool = move_items(m_dir)
+			if m_did_move:
+				play_move_audio()
+
 
 
 #will be responsible for making the moves
-func move_items(p_move: Vector2) -> void:
+func move_items(p_move: Vector2) -> bool:
 	if occupied.empty():
-		return
+		return false
 	
 	is_animating = true
 	#get a row/ column according to the move_direction:
@@ -88,6 +97,8 @@ func move_items(p_move: Vector2) -> void:
 			m_cells_to_process.append_array(get_column_data(m_x, m_move))
 			
 	for m_cell in m_cells_to_process:
+		if not occupied.has(m_cell):
+			continue
 		var m_item: Control = occupied[m_cell]
 		var m_target: Vector2 = m_cell
 		var m_will_merge: bool = false
@@ -113,22 +124,29 @@ func move_items(p_move: Vector2) -> void:
 			
 			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_merge_target_cell)
 			var m_target_item: Control = occupied[m_merge_target_cell]
-			
+
 			var m_tween: SceneTreeTween = get_tree().create_tween()
+			#m_tween.bind(m_item)
+			#need to make sure this tween is finished before calling queueFree
+
 			m_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
+			m_tween.tween_callback(m_item, "hide")
 			m_tween.tween_callback(m_item, "queue_free")
-			
+
 			var m_scale_tween: SceneTreeTween = get_tree().create_tween()
 			m_scale_tween.tween_property(m_target_item, "rect_scale", scaled_value, 0.1)
 			m_scale_tween.tween_property(m_target_item, "rect_scale", Vector2.ONE, 0.1)
+
+			m_target_item.on_combine()
 			
-		elif m_target != m_cell:
+
+		elif m_target != m_cell and m_item != null: #even with this check its passing though
 			occupied.erase(m_cell)
 			occupied[m_target] = m_item
 			empty_grid.append(m_cell)
 			empty_grid.erase(m_target)
 			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_target)
-			
+				
 			var m_animation_tween: SceneTreeTween = get_tree().create_tween()
 			m_animation_tween.set_parallel(true)
 			m_animation_tween.tween_property(
@@ -153,9 +171,10 @@ func move_items(p_move: Vector2) -> void:
 				Vector2.ONE,
 				0.15
 			)
-	#yield(animation_tween, "tween_completed")
+
 	spawn_item()
 	is_animating = false
+	return true
 
 
 
@@ -196,3 +215,7 @@ func get_column_data(p_column_index: int, p_dir: Vector2) -> Array:
 	
 	return m_sorted_cells
 
+
+func play_move_audio() -> void:
+	var m_random_pitch: float = rand_range(PITCH_VARIATION_LOWER_BOUND, PITCH_VARIATION_UPPER_BOUND)
+	AudioManager.play_sfx(move_sound, 0.0 , m_random_pitch)

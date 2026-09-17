@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/orange.png" type="Texture" id=1]
-[ext_resource path="res://src/orange.gd" type="Script" id=2]
+[ext_resource path="res://resource/orange.gd" type="Script" id=2]
+[ext_resource path="res://resource/orange_audio_info.tres" type="Resource" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.960784, 0.717647, 0.407843, 1 )
@@ -20,6 +21,7 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 my_id = 1
+audio_data = ExtResource( 3 )
 
 [node name="back-ground" type="Panel" parent="."]
 anchor_right = 1.0

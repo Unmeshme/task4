@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/time.wav-4d860ebb47bfd2d52f1a240b0d505c6d.sample"
+
+[deps]
+
+source_file="res://assets/music/time.wav"
+dest_files=[ "res://.import/time.wav-4d860ebb47bfd2d52f1a240b0d505c6d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

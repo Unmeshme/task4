@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resource/audio_info.gd" type="Script" id=1]
+[ext_resource path="res://assets/music/orange.wav" type="AudioStream" id=2]
+
+[resource]
+script = ExtResource( 1 )
+combine_sound = ExtResource( 2 )

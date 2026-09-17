@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Resource",
+"class": "AudioInfo",
+"language": "GDScript",
+"path": "res://resource/audio_info.gd"
+}, {
 "base": "Control",
 "class": "GameDeliveryItem",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://resource/level_items.gd"
 } ]
 _global_script_class_icons={
+"AudioInfo": "",
 "GameDeliveryItem": "",
 "LevelData": "",
 "LevelItems": ""
@@ -33,12 +39,13 @@ _global_script_class_icons={
 [application]
 
 config/name="task4"
-run/main_scene="res://src/LevelManager.tscn"
+run/main_scene="res://src/game_manager.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Globals="*res://src/globals.gd"
+AudioManager="*res://src/audio_manager.gd"
 
 [gui]
 

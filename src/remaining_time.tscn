@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/font/Ubuntu_Mono/UbuntuMono-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://src/remaining_time.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 1 )
+
+[node name="RemainingTime" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="Time" type="Timer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 714.0
+margin_top = 250.0
+margin_right = 1000.0
+margin_bottom = 321.0
+
+[node name="TimeLabel" type="Label" parent="VBoxContainer"]
+margin_right = 286.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+text = "Time Remaining"
+align = 1
+
+[node name="TimeAmount" type="Label" parent="VBoxContainer"]
+margin_top = 37.0
+margin_right = 286.0
+margin_bottom = 70.0
+custom_fonts/font = SubResource( 2 )
+text = "10"
+align = 1
+valign = 1

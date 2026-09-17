@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://src/BoardState.gd" type="Script" id=1]
-[ext_resource path="res://resource/DefaultItemList.tres" type="Resource" id=2]
-
-[node name="BoardState" type="Control"]
-script = ExtResource( 1 )
-board_items = ExtResource( 2 )
