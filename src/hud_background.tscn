@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.337255, 0.556863, 0.466667, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_size = 15
+
+[node name="HudBackground" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -300.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 300, 300 )
+custom_styles/panel = SubResource( 1 )

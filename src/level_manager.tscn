@@ -18,3 +18,9 @@ level_info = ExtResource( 4 )
 [node name="BoardState" parent="." instance=ExtResource( 3 )]
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
+anchor_left = 1.0
+anchor_bottom = 0.0
+margin_left = 1025.0
+margin_top = 100.0
+margin_right = 1025.0
+margin_bottom = 100.0
