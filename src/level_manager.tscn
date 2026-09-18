@@ -8,19 +8,20 @@
 [ext_resource path="res://src/hud.tscn" type="PackedScene" id=6]
 
 [node name="LevelManager" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 5 )
 level_info = ExtResource( 4 )
 
 [node name="game-background" parent="." instance=ExtResource( 2 )]
 
 [node name="game_map" parent="." instance=ExtResource( 1 )]
+margin_left = 200.0
+margin_right = 612.0
 
 [node name="BoardState" parent="." instance=ExtResource( 3 )]
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
-anchor_left = 1.0
-anchor_bottom = 0.0
-margin_left = 1025.0
-margin_top = 100.0
-margin_right = 1025.0
-margin_bottom = 100.0
+
+[connection signal="has_combined" from="BoardState" to="HUD" method="_on_BoardState_has_combined"]
+[connection signal="game_has_ended" from="HUD" to="." method="_on_hud_game_has_ended"]

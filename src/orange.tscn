@@ -14,12 +14,12 @@ shadow_color = Color( 0, 0, 0, 1 )
 shadow_size = 4
 
 [node name="orange" type="Control" groups=["delivery_item"]]
-anchor_right = 0.0976562
-anchor_bottom = 0.166667
+margin_left = -50.0
+margin_top = -50.0001
+margin_right = 50.0
+margin_bottom = 50.0001
+rect_min_size = Vector2( 100, 100 )
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": true
-}
 my_id = 1
 audio_data = ExtResource( 3 )
 
@@ -34,12 +34,12 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="icon" type="TextureRect" parent="."]
+[node name="icon" type="TextureRect" parent="back-ground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 25.0
-margin_top = 25.0
+margin_top = 25.2525
 margin_right = 437.0
-margin_bottom = 437.0
+margin_bottom = 437.253
 rect_scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )

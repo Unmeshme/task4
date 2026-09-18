@@ -1,4 +1,5 @@
-extends Node
+extends Control
+
 
 export var game_bg_music: AudioStream
 

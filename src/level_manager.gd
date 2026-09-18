@@ -6,6 +6,7 @@ export var level_info: Resource
 
 onready var grid: GridContainer = $game_map
 onready var board: Node = $BoardState
+onready var hud: Control = $HUD
 
 var empty_list: Array = []
 
@@ -19,6 +20,7 @@ func setup_level() -> void:
 	grid.draw_map_background(level_info.column_size, level_info.row_size)
 	board.initialize_grid(level_info.column_size, level_info.row_size)
 	board.spawn_item(2)
+	hud._initialize_initial_state(level_info.time_limit, level_info.total_delivery)
 
 
 #TODO: Write function to load the next level
@@ -39,3 +41,12 @@ func setup_globals() -> void:
 func setup_next_level() -> void:
 	pass
 
+
+func on_combine() -> void:
+	hud.update_score()
+
+
+func _on_hud_game_has_ended():
+	#do something here for now just redo the level?
+	update()
+	setup_level()

@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource( 1 )
 level_name = "lv1"
-time_limit = 60
+time_limit = 10
 column_size = 4
 row_size = 4
 total_delivery = 20

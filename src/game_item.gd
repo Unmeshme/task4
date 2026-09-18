@@ -30,8 +30,8 @@ func spawn_animation() -> void:
 	rect_pivot_offset = rect_size / 2.0
 	
 	var m_scale_tween : SceneTreeTween = get_tree().create_tween()
-	m_scale_tween.tween_property(self, "rect_scale", scaled_value, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	m_scale_tween.tween_property(self, "rect_scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT_IN)
+	m_scale_tween.tween_property(self, "rect_scale", scaled_value, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	m_scale_tween.tween_property(self, "rect_scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 func on_combine() -> void:

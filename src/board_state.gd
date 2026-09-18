@@ -1,7 +1,7 @@
 extends Control
 
 
-
+signal has_combined
 
 const PITCH_VARIATION_LOWER_BOUND: float = 0.9
 const PITCH_VARIATION_UPPER_BOUND: float = 1.1
@@ -27,7 +27,6 @@ func initialize_grid(p_width: int, p_height: int) -> void:
 	for m_i in range(p_width):
 		for m_j in range(p_height):
 			empty_grid.append(Vector2(m_i, m_j))
-
 
 
 #and also spawning the items
@@ -84,97 +83,93 @@ func move_items(p_move: Vector2) -> bool:
 		return false
 	
 	is_animating = true
-	#get a row/ column according to the move_direction:
-	var m_move: Vector2 = p_move
 	var m_cells_to_process: Array = []
-	var m_merged_cells: Array = []
+	var m_merged_this_turn: Array = []
+	var m_did_move: bool = false
 	
-	if m_move == Vector2.LEFT or m_move == Vector2.RIGHT:
+	if p_move == Vector2.LEFT or p_move == Vector2.RIGHT:
 		for m_y in range(Globals.grid_height):
-			m_cells_to_process.append_array(get_row_data(m_y, m_move))
+			m_cells_to_process.append_array(get_row_data(m_y, p_move))
 	else:
 		for m_x in range(Globals.grid_width):
-			m_cells_to_process.append_array(get_column_data(m_x, m_move))
+			m_cells_to_process.append_array(get_column_data(m_x, p_move))
 			
 	for m_cell in m_cells_to_process:
 		if not occupied.has(m_cell):
 			continue
+			
 		var m_item: Control = occupied[m_cell]
+		if not is_instance_valid(m_item):
+			continue
+			
 		var m_target: Vector2 = m_cell
 		var m_will_merge: bool = false
 		var m_merge_target_cell: Vector2 = Vector2(-1, -1)
 		
 		while true:
 			var m_next: Vector2 = m_target + p_move
-			if empty_grid.has(m_next) and not occupied.has(m_next):
+			
+			if m_next.x < 0 or m_next.x >= Globals.grid_width or m_next.y < 0 or m_next.y >= Globals.grid_height:
+				break
+				
+			if not occupied.has(m_next):
 				m_target = m_next
 			elif occupied.has(m_next):
 				var m_other_item: Control = occupied[m_next]
-				if m_other_item.get("my_id") == m_item.get("my_id"):
-					m_will_merge = true
-					m_merge_target_cell = m_next
-				break
-			else:
+				
+				# Check if the target is valid and hasn't been merged into already
+				if is_instance_valid(m_other_item) and not m_next in m_merged_this_turn:
+					if m_other_item.get("my_id") == m_item.get("my_id"):
+						m_will_merge = true
+						m_merge_target_cell = m_next
 				break
 		
 		if m_will_merge:
+			m_did_move = true
+			var m_target_item: Control = occupied[m_merge_target_cell]
+			
+
 			occupied.erase(m_cell)
+			occupied.erase(m_merge_target_cell)
+			
 			empty_grid.append(m_cell)
-			m_merged_cells.append(m_merge_target_cell)
+			empty_grid.append(m_merge_target_cell)
+			
+
+			m_merged_this_turn.append(m_merge_target_cell)
 			
 			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_merge_target_cell)
-			var m_target_item: Control = occupied[m_merge_target_cell]
+
 
 			var m_tween: SceneTreeTween = get_tree().create_tween()
-			#m_tween.bind(m_item)
-			#need to make sure this tween is finished before calling queueFree
-
 			m_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
-			m_tween.tween_callback(m_item, "hide")
 			m_tween.tween_callback(m_item, "queue_free")
 
-			var m_scale_tween: SceneTreeTween = get_tree().create_tween()
-			m_scale_tween.tween_property(m_target_item, "rect_scale", scaled_value, 0.1)
-			m_scale_tween.tween_property(m_target_item, "rect_scale", Vector2.ONE, 0.1)
+			if is_instance_valid(m_target_item):
+				if m_target_item.has_method("on_combine"):
+					m_target_item.on_combine()
+				var m_scale_tween: SceneTreeTween = get_tree().create_tween()
+				m_scale_tween.tween_property(m_target_item, "rect_scale", scaled_value, 0.1)
+				m_scale_tween.tween_property(m_target_item, "rect_scale", Vector2.ZERO, 0.1)
+				m_scale_tween.tween_callback(m_target_item, "queue_free")
+				emit_signal("has_combined")
 
-			m_target_item.on_combine()
-			
-
-		elif m_target != m_cell and m_item != null: #even with this check its passing though
+		elif m_target != m_cell:
+			m_did_move = true
 			occupied.erase(m_cell)
 			occupied[m_target] = m_item
 			empty_grid.append(m_cell)
 			empty_grid.erase(m_target)
+			
 			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_target)
-				
 			var m_animation_tween: SceneTreeTween = get_tree().create_tween()
-			m_animation_tween.set_parallel(true)
-			m_animation_tween.tween_property(
-			 m_item,
-			"rect_global_position",
-			m_world_pos,
-			0.15
-			)
+			m_animation_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
 
-			var m_scale_tween: SceneTreeTween = get_tree().create_tween()
-			
-			m_scale_tween.tween_property(
-				m_item,
-				"rect_scale",
-				scaled_value,
-				0.15
-			)
-			
-			m_scale_tween.tween_property(
-				m_item,
-				"rect_scale",
-				Vector2.ONE,
-				0.15
-			)
-
-	spawn_item()
+	if m_did_move:
+		spawn_item()
+		
 	is_animating = false
-	return true
+	return m_did_move
 
 
 

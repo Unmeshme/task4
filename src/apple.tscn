@@ -15,30 +15,26 @@ shadow_color = Color( 0, 0, 0, 1 )
 shadow_size = 4
 
 [node name="apple" type="Control" groups=["delivery_item"]]
-anchor_right = 0.0976562
-anchor_bottom = 0.166667
+margin_left = -50.0
+margin_top = -50.0
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 100 )
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": true
-}
 audio_data = ExtResource( 3 )
 
 [node name="back-ground" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -64.0
 rect_min_size = Vector2( 100, 100 )
 custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": true
-}
 
-[node name="icon" type="TextureRect" parent="."]
+[node name="icon" type="TextureRect" parent="back-ground"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 25.0
-margin_top = 25.0
-margin_right = 491.0
-margin_bottom = 491.0
+margin_left = 26.0
+margin_top = 22.0
+margin_right = 492.0
+margin_bottom = 488.0
 rect_scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 1 )

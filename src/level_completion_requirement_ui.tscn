@@ -35,8 +35,6 @@ rect_min_size = Vector2( 300, 300 )
 custom_constants/separation = 30
 
 [node name="RequiredContainer" type="VBoxContainer" parent="HBoxContainer"]
-anchor_left = 0.35
-anchor_right = 0.35
 margin_right = 48.0
 margin_bottom = 300.0
 
@@ -55,8 +53,6 @@ text = "50"
 align = 1
 
 [node name="DeliveryContainer" type="VBoxContainer" parent="HBoxContainer"]
-anchor_left = 0.343
-anchor_right = 0.343
 margin_left = 78.0
 margin_right = 142.0
 margin_bottom = 300.0
