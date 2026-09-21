@@ -1,9 +1,7 @@
 extends GridContainer
 
-#this script will be responsible for creating the map the player will play in
 
-var num_column: int = 4
-var num_square: int = 16
+#this script will be responsible for creating the map the player will play in
 var get_first_square_pos: Vector2 = Vector2.ZERO
 
 const DEFAULT_SQUARE = preload("res://src/square.tscn")
@@ -20,3 +18,7 @@ func draw_map_background(p_columns: int, p_width: int) -> void:
 	for _i in range(columns * m_rows):
 		var m_instance: Control = DEFAULT_SQUARE.instance()
 		add_child(m_instance)
+
+func free_board_grid() -> void:
+	for m_child in get_children():
+		m_child.queue_free()

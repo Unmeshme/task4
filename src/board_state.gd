@@ -32,6 +32,7 @@ func initialize_grid(p_width: int, p_height: int) -> void:
 #and also spawning the items
 func spawn_item(p_count: int = 1) -> void:
 	if empty_grid.empty():
+		#initiate game over here
 		return
 
 	for _i in range(p_count):
@@ -214,3 +215,14 @@ func get_column_data(p_column_index: int, p_dir: Vector2) -> Array:
 func play_move_audio() -> void:
 	var m_random_pitch: float = rand_range(PITCH_VARIATION_LOWER_BOUND, PITCH_VARIATION_UPPER_BOUND)
 	AudioManager.play_sfx(move_sound, 0.0 , m_random_pitch)
+
+
+func reset_state() -> void:
+	empty_grid.clear()
+	occupied.clear()
+
+
+func free_board() -> void:
+	for m_child in get_children():
+		m_child.queue_free()
+	reset_state()

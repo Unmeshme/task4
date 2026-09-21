@@ -46,7 +46,11 @@ func on_combine() -> void:
 	hud.update_score()
 
 
-func _on_hud_game_has_ended():
-	#do something here for now just redo the level?
-	update()
+func _on_hud_game_has_ended() -> void:
+	reset_board_and_board_state()
 	setup_level()
+	update()
+
+func reset_board_and_board_state() -> void:
+	board.free_board()
+	grid.free_board_grid()
