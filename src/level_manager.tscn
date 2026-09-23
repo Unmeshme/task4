@@ -23,5 +23,7 @@ margin_right = 612.0
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
 
+[connection signal="game_has_ended" from="BoardState" to="." method="_on_hud_game_has_ended"]
 [connection signal="has_combined" from="BoardState" to="HUD" method="_on_BoardState_has_combined"]
 [connection signal="game_has_ended" from="HUD" to="." method="_on_hud_game_has_ended"]
+[connection signal="level_completed" from="HUD" to="." method="_on_HUD_level_completed"]

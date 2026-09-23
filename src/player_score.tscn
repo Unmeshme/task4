@@ -23,20 +23,20 @@ script = ExtResource( 2 )
 [node name="background" type="NinePatchRect" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -241.0
-margin_top = 132.0
-margin_right = -40.0
-margin_bottom = 182.0
+margin_left = -239.0
+margin_top = 164.0
+margin_right = -38.0
+margin_bottom = 214.0
 rect_min_size = Vector2( 200, 50 )
 texture = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -234.0
-margin_top = 133.0
-margin_right = -41.0
-margin_bottom = 177.0
+margin_left = -232.0
+margin_top = 165.0
+margin_right = -32.0
+margin_bottom = 209.0
 
 [node name="ScoreLabel" type="Label" parent="HBoxContainer"]
 self_modulate = Color( 0, 0, 0, 1 )

@@ -6,6 +6,9 @@ var rect_pos: Vector2
 var grid_width: int
 var grid_height: int
 
+#spawn double amount of fruits when bonus round is active
+#activation condition is 30% remaining time
+var bonus_round: bool = false
 
 const RECT_WIDTH: int = 100
 

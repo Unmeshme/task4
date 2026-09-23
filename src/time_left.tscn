@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/font/Ubuntu_Mono/UbuntuMono-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://assets/vector_ui/labelAdvanced_red.png" type="Texture" id=2]
-[ext_resource path="res://time_left.gd" type="Script" id=3]
+[ext_resource path="res://src/time_left.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -21,10 +21,10 @@ script = ExtResource( 3 )
 [node name="background" type="NinePatchRect" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -241.0
-margin_top = 200.0
-margin_right = -41.0
-margin_bottom = 250.0
+margin_left = -237.0
+margin_top = 223.0
+margin_right = -37.0
+margin_bottom = 273.0
 rect_min_size = Vector2( 200, 50 )
 texture = ExtResource( 2 )
 
@@ -34,10 +34,10 @@ autostart = true
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -219.0
-margin_top = 199.0
-margin_right = -18.0
-margin_bottom = 249.0
+margin_left = -211.0
+margin_top = 221.0
+margin_right = -10.0
+margin_bottom = 271.0
 rect_min_size = Vector2( 200, 50 )
 custom_constants/separation = 20
 

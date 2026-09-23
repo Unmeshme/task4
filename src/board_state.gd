@@ -1,13 +1,16 @@
 extends Control
 
 
-signal has_combined
+signal has_combined(p_data)
+signal game_has_ended
+
 
 const PITCH_VARIATION_LOWER_BOUND: float = 0.9
 const PITCH_VARIATION_UPPER_BOUND: float = 1.1
 
 
-export var board_items: Resource
+var board_items: Resource
+
 export var move_sound: AudioStream
 
 var occupied: Dictionary = {}
@@ -33,8 +36,13 @@ func initialize_grid(p_width: int, p_height: int) -> void:
 func spawn_item(p_count: int = 1) -> void:
 	if empty_grid.empty():
 		#initiate game over here
-		return
-
+		emit_signal("game_has_ended")
+	
+	#check if item_spawn will overflow the grids
+	#for that check both empty_grid and occupied grid number
+	if empty_grid.size() - p_count < 0 && occupied.size() + p_count > (Globals.grid_height * Globals.grid_width - 1):
+		spawn_item((Globals.grid_width * Globals.grid_height - 1) - occupied.size())
+	
 	for _i in range(p_count):
 		var m_item_scene: PackedScene = board_items.level_items[randi() % board_items.level_items.size()]
 		var m_item: Control = m_item_scene.instance() as Control
@@ -77,7 +85,6 @@ func _unhandled_input(p_event: InputEvent) -> void:
 				play_move_audio()
 
 
-
 #will be responsible for making the moves
 func move_items(p_move: Vector2) -> bool:
 	if occupied.empty():
@@ -88,6 +95,8 @@ func move_items(p_move: Vector2) -> bool:
 	var m_merged_this_turn: Array = []
 	var m_did_move: bool = false
 	
+	var m_combinations: Dictionary = {}
+	#just keep track if the motion is in x direction or not
 	if p_move == Vector2.LEFT or p_move == Vector2.RIGHT:
 		for m_y in range(Globals.grid_height):
 			m_cells_to_process.append_array(get_row_data(m_y, p_move))
@@ -100,7 +109,7 @@ func move_items(p_move: Vector2) -> bool:
 			continue
 			
 		var m_item: Control = occupied[m_cell]
-		if not is_instance_valid(m_item):
+		if not is_instance_valid(m_item) or m_item.is_queued_for_deletion():
 			continue
 			
 		var m_target: Vector2 = m_cell
@@ -119,7 +128,7 @@ func move_items(p_move: Vector2) -> bool:
 				var m_other_item: Control = occupied[m_next]
 				
 				# Check if the target is valid and hasn't been merged into already
-				if is_instance_valid(m_other_item) and not m_next in m_merged_this_turn:
+				if is_instance_valid(m_other_item) and not m_other_item.is_queued_for_deletion() and not m_next in m_merged_this_turn:
 					if m_other_item.get("my_id") == m_item.get("my_id"):
 						m_will_merge = true
 						m_merge_target_cell = m_next
@@ -129,6 +138,11 @@ func move_items(p_move: Vector2) -> bool:
 			m_did_move = true
 			var m_target_item: Control = occupied[m_merge_target_cell]
 			
+			var m_item_id = m_item.get("my_id")
+			if m_item_id != null:
+				if not m_combinations.has(m_item_id):
+					m_combinations[m_item_id] = 0
+				m_combinations[m_item_id] += 1
 
 			occupied.erase(m_cell)
 			occupied.erase(m_merge_target_cell)
@@ -136,24 +150,23 @@ func move_items(p_move: Vector2) -> bool:
 			empty_grid.append(m_cell)
 			empty_grid.append(m_merge_target_cell)
 			
-
 			m_merged_this_turn.append(m_merge_target_cell)
 			
 			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_merge_target_cell)
 
-
-			var m_tween: SceneTreeTween = get_tree().create_tween()
+			# Moving item tween
+			var m_tween: SceneTreeTween = get_tree().create_tween().bind_node(m_item)
 			m_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
 			m_tween.tween_callback(m_item, "queue_free")
-
-			if is_instance_valid(m_target_item):
+			
+			# Target item merge scaling tween
+			if is_instance_valid(m_target_item) and not m_target_item.is_queued_for_deletion():
 				if m_target_item.has_method("on_combine"):
 					m_target_item.on_combine()
-				var m_scale_tween: SceneTreeTween = get_tree().create_tween()
+				var m_scale_tween: SceneTreeTween = get_tree().create_tween().bind_node(m_target_item)
 				m_scale_tween.tween_property(m_target_item, "rect_scale", scaled_value, 0.1)
 				m_scale_tween.tween_property(m_target_item, "rect_scale", Vector2.ZERO, 0.1)
 				m_scale_tween.tween_callback(m_target_item, "queue_free")
-				emit_signal("has_combined")
 
 		elif m_target != m_cell:
 			m_did_move = true
@@ -161,17 +174,21 @@ func move_items(p_move: Vector2) -> bool:
 			occupied[m_target] = m_item
 			empty_grid.append(m_cell)
 			empty_grid.erase(m_target)
-			
-			var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_target)
-			var m_animation_tween: SceneTreeTween = get_tree().create_tween()
-			m_animation_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
-
+			if is_instance_valid(m_item) and not m_item.is_queued_for_deletion():
+				var m_world_pos: Vector2 = Globals.convert_grid_to_global(m_target)
+				var m_animation_tween: SceneTreeTween = get_tree().create_tween().bind_node(m_item)
+				m_animation_tween.tween_property(m_item, "rect_global_position", m_world_pos, 0.15)
+	
+	if not m_combinations.empty():
+		emit_signal("has_combined", m_combinations)
+	
 	if m_did_move:
-		spawn_item()
-		
+		if not Globals.bonus_round:
+			spawn_item()
+		else:
+			spawn_item(3)
 	is_animating = false
 	return m_did_move
-
 
 
 func get_row_data(p_row_index: int , p_dir: Vector2) -> Array:
@@ -218,11 +235,17 @@ func play_move_audio() -> void:
 
 
 func reset_state() -> void:
+	Globals.bonus_round = false
 	empty_grid.clear()
 	occupied.clear()
 
 
 func free_board() -> void:
-	for m_child in get_children():
-		m_child.queue_free()
 	reset_state()
+	for m_child in get_children():
+		m_child.hide()
+		m_child.queue_free()
+
+
+func get_level_item_list(p_resource: Resource) -> void:
+	board_items = p_resource

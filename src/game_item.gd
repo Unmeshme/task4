@@ -13,7 +13,8 @@ var scaled_down: Vector2 = Vector2(0.9, 0.9)
 
 enum ITEM_ID{
 	ITEM_APPLE = 0,
-	ITEM_ORANGE
+	ITEM_ORANGE,
+	ITEM_CAKE
 }
 
 export (ITEM_ID) var my_id: int = ITEM_ID.ITEM_APPLE

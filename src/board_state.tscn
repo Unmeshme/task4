@@ -1,10 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://src/board_state.gd" type="Script" id=1]
-[ext_resource path="res://resource/default_item_list.tres" type="Resource" id=2]
 [ext_resource path="res://assets/music/moveSoundEffect.wav" type="AudioStream" id=3]
 
 [node name="BoardState" type="Control"]
 script = ExtResource( 1 )
-board_items = ExtResource( 2 )
 move_sound = ExtResource( 3 )

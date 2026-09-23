@@ -11,10 +11,11 @@ const DEFAULT_SQUARE = preload("res://src/square.tscn")
 func _get_rect_position() -> Vector2:
 	return rect_global_position
 
-func draw_map_background(p_columns: int, p_width: int) -> void:
+func draw_map_background(p_position: Vector2,p_columns: int, p_width: int) -> void:
+	#set the global rect position
+	rect_global_position = p_position
 	columns = p_columns
 	var m_rows: int = p_width
-	
 	for _i in range(columns * m_rows):
 		var m_instance: Control = DEFAULT_SQUARE.instance()
 		add_child(m_instance)
