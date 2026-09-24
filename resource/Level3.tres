@@ -2,18 +2,18 @@
 
 [ext_resource path="res://resource/level_data.gd" type="Script" id=1]
 [ext_resource path="res://resource/level2_item_data.tres" type="Resource" id=2]
-[ext_resource path="res://resource/Level3.tres" type="Resource" id=3]
+[ext_resource path="res://resource/level4.tres" type="Resource" id=3]
 
 [resource]
 script = ExtResource( 1 )
-grid_position = Vector2( 100, 100 )
-level_name = "lvl2"
-time_limit = 60
+grid_position = Vector2( 100, 0 )
+level_name = "lvl3"
+time_limit = 40
 column_size = 5
-row_size = 4
+row_size = 6
 delivery_limit = {
 "apple": 40,
-"cake": 20,
+"cake": 34,
 "orange": 30
 }
 next_level = ExtResource( 3 )
