@@ -35,3 +35,10 @@ func reset_hud() -> void:
 
 func _on_progressbar_level_completed():
 	emit_signal("level_completed")
+
+func pause_timer() -> void:
+	time.pause_timer()
+
+
+func resume_timer() -> void:
+	time.resume_timer()

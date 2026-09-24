@@ -6,6 +6,9 @@ onready var timer: Timer = $Counter
 
 signal game_has_ended
 
+export var tick_sound: AudioStreamSample
+
+
 var total_time: int = 0
 var time_30_percent: float = 0
 
@@ -19,6 +22,7 @@ func set_timer_val(p_val: int) -> void:
 
 
 func _on_counter_timeout():
+	AudioManager.play_sfx(tick_sound)
 	set_timer_val(total_time - 1)
 	
 	if total_time <= time_30_percent:
@@ -31,4 +35,10 @@ func _on_counter_timeout():
 func reset_time_30_percent() -> void:
 	time_30_percent = 0
 
+func pause_timer() -> void:
+	timer.paused = true
+
+
+func resume_timer() -> void:
+	timer.paused = false
 

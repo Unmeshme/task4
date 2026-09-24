@@ -66,3 +66,11 @@ func reset_board_and_board_state() -> void:
 
 func _on_HUD_level_completed():
 	setup_next_level()
+
+
+func pause_timer() -> void:
+	hud.pause_timer()
+
+
+func resume_timer() -> void:
+	hud.resume_timer()
