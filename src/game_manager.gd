@@ -5,16 +5,19 @@ export var game_bg_music: AudioStream
 
 onready var level_manager: Control = $LevelManager
 onready var settings : Control = $SettingsPage
+onready var transition: Control = $transition
 var currently_inside_settings: bool = false
 
 
 
 func _unhandled_input(p_event: InputEvent) -> void:
 	if p_event.is_action_pressed("esc") and not currently_inside_settings:
+		yield(transition.fade_in(), "completed")
 		settings.show()
 		hide_level_manager()
 		currently_inside_settings = true
 	elif p_event.is_action_pressed("esc") and currently_inside_settings:
+		yield(transition.fade_in(), "completed")
 		show_level_manager()
 		settings.hide()
 		currently_inside_settings = false

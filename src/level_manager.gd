@@ -7,15 +7,18 @@ export var level_info: Resource
 onready var grid: GridContainer = $game_map
 onready var board: Node = $BoardState
 onready var hud: Control = $HUD
+onready var transition: Control = $transition
 
 var empty_list: Array = []
 
 
 func _ready():
+	#why did it not run though?
 	setup_level()
 
 
 func setup_level(p_default: int = 2) -> void:
+	transition.fade_in()
 	setup_globals()
 	draw_content()
 	board.get_level_item_list(level_info.item_data)
